@@ -1,0 +1,23 @@
+<head>
+    <link rel = "stylesheet" type = "text/css" href = "Website/style.css" />
+    <script src="Website/websuits.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+
+<div class="debugBox">
+    <div>
+        Repo: <input id='repoURL' type=text style="width:500px"
+        value='raw.githubusercontent.com/michaeldowd2/Wikiart_tSNE/master/index'>
+        <button onclick="LoadIndex()">Load</button>
+    </div>
+    <hr>
+    <div id="debugResultBox"> </div>
+</div>
+
+<script>
+    window.onload = function() {
+
+        LoadIndex()
+    }
+</script>
+
