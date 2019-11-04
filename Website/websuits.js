@@ -2,6 +2,7 @@ var fileInput = document.getElementById('myfile');
 var fReader = new FileReader();
 
 function GetRepoFiles(repo) {
+    repo = document.getElementById('repoURL').value
     masterURL = 'https://api.github.com/repos/' + repo + '/branches/master'
     var lastCommitReq = new XMLHttpRequest();
     lastCommitReq.open("GET", masterURL, true);
@@ -20,6 +21,9 @@ function GetRepoFiles(repo) {
             console.log('received json for tree')
             treeObject = obj["tree"]
             console.log(treeObject)
+            itemList = BuildItemList(treeObject,'',repo)
+            console.log('item list')
+            console.log(itemList)
         };
         console.log('Sending Request for file list to: ' + masterURL)
         fileTreeReq.send();
@@ -55,8 +59,32 @@ function ShowRateLimit() {
     req.send();
 }
 
-function BuildItemList(treeObject) {
+function BuildItemList(treeObject, Directory, Repo) {
+    newArray = []
+    document.getElementById('debugResultBox').innerHTML += '<h3>Repo Wrapper: '+ Repo +'</h3><ul>'
+    treeObject.forEach(function(item,index) {
+        //is it an image
+        if (item["type"]=='blob' && (item["path"].toUpperCase().includes('.JPG') || item["path"].toUpperCase().includes('.PNG'))) {
+            title = item["path"]
+            repoPath = Directory + '/' + item["path"]
+            URL = 'https://raw.githubusercontent.com/' + Repo + '/master/'+repoPath
+            item = {Type: "Image", Title:title, Subtitle:'', Directory: Directory, URL: URL }
+            newArray.push(item)
 
+            document.getElementById('debugResultBox').innerHTML += '<li>'+item["Type"]+': ' +item["Title"]+ ', URL: '+item["URL"]+'</li>'
+        }
+        if (item["type"]=='tree'){
+            title = item["path"]
+            repoPath = Directory + '/' + item["path"]
+            URL = item['url']
+            item = {Type: "Folder", Title:title, Subtitle:'', Directory: Directory, URL: URL }
+            newArray.push(item)
+
+            document.getElementById('debugResultBox').innerHTML += '<li>'+item["Type"]+': ' +item["Title"]+', API URL: '+item["URL"]+'</li>'
+        }
+    })
+    document.getElementById('debugResultBox').innerHTML += '</ul>'
+    return newArray
 }
 
 function LoadIndex() {

@@ -7,8 +7,8 @@
 <div class="debugBox">
     <div>
         Repo: <input id='repoURL' type=text style="width:500px"
-        value='raw.githubusercontent.com/michaeldowd2/Wikiart_tSNE/master/index'>
-        <button onclick="LoadIndex()">Load</button>
+        value='michaeldowd2/Wikiart_tSNE'>
+        <button onclick="GetRepoFiles()">Load</button>
     </div>
     <hr>
     <div id="debugResultBox"> </div>
@@ -16,7 +16,7 @@
 
 <script>
     window.onload = function() {
-        GetRepoFiles('michaeldowd2/Wikiart_tSNE')
+        GetRepoFiles()
         GetFolderContents('https://api.github.com/repos/michaeldowd2/Wikiart_tSNE/git/trees/090eed72ef156494eede0d00ca3f62da010eb330')
         ShowRateLimit()
     }
