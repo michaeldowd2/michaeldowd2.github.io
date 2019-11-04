@@ -1,20 +1,62 @@
 var fileInput = document.getElementById('myfile');
 var fReader = new FileReader();
 
-function GithubAPI() {
-    file = 'https://api.github.com/repos/learningequality/ka-lite/commits'
-    file = 'https://api.github.com/repos/learningequality/ka-lite/git/trees/7b698a988683b161bdcd48a949b01e2b336b4c01'
-    var oReq = new XMLHttpRequest();
-    oReq.open("GET", file, true);
-    oReq.responseType = "json";
+function GetRepoFiles(repo) {
+    masterURL = 'https://api.github.com/repos/' + repo + '/branches/master'
+    var lastCommitReq = new XMLHttpRequest();
+    lastCommitReq.open("GET", masterURL, true);
+    lastCommitReq.responseType = "json";
+    lastCommitReq.onload = function(oEvent) {
+        var obj = lastCommitReq.response;
+        console.log('received json for last commit')
+        treeURL=obj["commit"]["commit"]["tree"]["url"]
+        console.log(treeURL)
 
-    oReq.onload = function(oEvent) {
-        var blob = oReq.response;
-        console.log('received json')
-        console.log(blob)
+        var fileTreeReq = new XMLHttpRequest();
+        fileTreeReq.open("GET", treeURL, true);
+        fileTreeReq.responseType = "json";
+        fileTreeReq.onload = function(oEvent) {
+            var obj = fileTreeReq.response;
+            console.log('received json for tree')
+            treeObject = obj["tree"]
+            console.log(treeObject)
+        };
+        console.log('Sending Request for file list to: ' + masterURL)
+        fileTreeReq.send();
     };
-    console.log('Sending Request to: ' + file)
-    oReq.send();
+    console.log('Sending Request for last commit to: ' + masterURL)
+    lastCommitReq.send();
+}
+
+function GetFolderContents(target) {
+    var req = new XMLHttpRequest();
+    req.open("GET", target, true);
+    req.responseType = "json";
+    req.onload = function(oEvent) {
+        console.log('received tree json')
+        var obj = req.response;
+        treeObject = obj["tree"]
+        console.log(treeObject)
+    };
+    console.log('Sending Request to: ' + target)
+    req.send();
+}
+
+function ShowRateLimit() {
+    var req = new XMLHttpRequest();
+    req.open("GET", 'https://api.github.com/rate_limit', true);
+    req.responseType = "json";
+    req.onload = function(oEvent) {
+        console.log('Rate Limit')
+        var obj = req.response;
+        console.log(obj)
+    };
+    console.log('Sending Rate Limit Request')
+    req.send();
+}
+
+function BuildItemList(treeObject) {
+
 }
 
 function LoadIndex() {
