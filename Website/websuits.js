@@ -1,6 +1,21 @@
 var fileInput = document.getElementById('myfile');
 var fReader = new FileReader();
 
+function LoadURL() {
+    file = 'https://github.com/michaeldowd2/Wikiart_tSNE'
+    var oReq = new XMLHttpRequest();
+    oReq.open("GET", file, true);
+    oReq.responseType = "blob";
+
+    oReq.onload = function(oEvent) {
+        var blob = oReq.response;
+        console.log('received blob')
+        console.log(blob)
+    };
+    console.log('Sending Request to: ' + file)
+    oReq.send();
+}
+
 function LoadIndex() {
     file = document.getElementById('repoURL').value
     if (file.indexOf('https://')<0) {file = 'https://' + file}
