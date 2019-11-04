@@ -1,15 +1,16 @@
 var fileInput = document.getElementById('myfile');
 var fReader = new FileReader();
 
-function LoadURL() {
-    file = 'https://github.com/michaeldowd2/Wikiart_tSNE'
+function GithubAPI() {
+    file = 'https://api.github.com/repos/learningequality/ka-lite/commits'
+    file = 'https://api.github.com/repos/learningequality/ka-lite/git/trees/7b698a988683b161bdcd48a949b01e2b336b4c01'
     var oReq = new XMLHttpRequest();
     oReq.open("GET", file, true);
-    oReq.responseType = "blob";
+    oReq.responseType = "json";
 
     oReq.onload = function(oEvent) {
         var blob = oReq.response;
-        console.log('received blob')
+        console.log('received json')
         console.log(blob)
     };
     console.log('Sending Request to: ' + file)
