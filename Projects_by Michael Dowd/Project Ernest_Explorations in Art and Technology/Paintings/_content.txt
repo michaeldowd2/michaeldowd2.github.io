@@ -1,0 +1,1 @@
+<p>Paintings painted by the project Ernest machine or by hand using the project Ernest stroke algorithm</p>
