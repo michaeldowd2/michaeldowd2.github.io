@@ -1,16 +1,17 @@
-<p>Project Ernest is a project by Michael Dowd, it's all about exploring the boundaries between art and technology</p>
+<p>Project Ernest is a painting machine, and the software that drives it. A digital image is processed, turned into brush strokes, and painted on a canvas up to 1m × 1m.</p>
 <hr>
 <h3>Objectives</h3>
 <ul>
-<li>Develop a flexible software platform for defining a drawing/painting style that can be applied to a digital image and build a machine that can draw or paint the output from that software.</li>
-<li>Use this platform to execute my own artistic ideas and produce powerful and original pieces of art.</li>
-<li>Create an iterative agent based AI system with the ability to use the software to render previews of artistic works and provide score the works based on a dynamic artistic preference. The aim would be for the system to loosely simulate a community of artists and autonomously develop a preferred artistic style or styles over many iterations. It could then use the machine to create a actual pieces of art.</li>
+<li>Define a painting style in software, apply it to an image, and execute the result with a physical brush and paint.</li>
+<li>Use the system to produce my own work.</li>
+<li>Extend it with an iterative, agent-based layer that previews candidate paintings, scores them against a changing artistic preference, and over many cycles settles on styles the machine can paint.</li>
 </ul>
 <hr>
 <h3>How it works</h3>
-<p>In a nutshell, the project has three parts</p>
+<p>The system is layered, with a one-way dependency. Image processing feeds stroke generation, which feeds a Python control layer, which drives the machine. Each stage can be changed without rewriting the ones below it.</p>
 <ul>
-<li>Software for turning an image into strokes with a definable style</li>
-<li>Software for controlling a machine and interacting with the arduino</li>
-<li>The hardware - based on modular cnc & 3d printing components, motors, controllers and arduinos</li>
+<li><strong>Image processing</strong> — A modular, configurable stack of effects. The same stack can be applied to a new image to reproduce a painting style. Neural style transfer is one of the modules.</li>
+<li><strong>Vectoriser and stroke generation</strong> — The processed image is converted to vectors, then to brush paths. Brush contact is non-linear, so pressure builds as the brush meets the canvas in the way a painter applies it. Paths also rotate the brush, mix colour on a two-axis palette from a small set of base colours, and support mixing and scumbling on the canvas. Paint on the brush is tracked against the strokes so the system can estimate when more paint is needed.</li>
+<li><strong>Hardware control</strong> — A custom Python layer on GRBL turns those paths into motion commands. A UI visualises and tests the command stream before it is sent to the machine.</li>
+<li><strong>Machine</strong> — Built from CNC and 3D-printed parts, stepper motors, and two Arduinos running GRBL. The axes are X, Y, and Z, plus brush rotation and two palette axes. The painting area is 1m in each direction.</li>
 </ul>
